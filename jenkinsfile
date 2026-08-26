@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout'){
+        steps{
+            git url: 'https://github.com/adwait888-coder/CHATTERBOX-MESSAGING-FORUM', branch: 'main'
+        }
+    }
+    stage('Build'){
+        steps{
+            sh 'ls -la'
+        }
+    }
+   stage('Compile with Podman') {
+    steps {
+        sh '''
+            mkdir -p target/classes
+            chmod -R 777 target || true
+
+            podman run --rm \
+            -v /var/lib/jenkins/workspace/CHATTERBOX-MESSAGING-FORUM:/app:z \
+            -w /app \
+            registry.access.redhat.com/ubi8/openjdk-8 \
+            mvn package
+        '''
+    }
+}
+stage ('Build custom Tomcat image'){
+    steps{
+        sh 'podman build -t chatterbox-app:latest .'
+    }
+}
+   
+}
+}
