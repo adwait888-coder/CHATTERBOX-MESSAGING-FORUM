@@ -1,5 +1,5 @@
 # Use Tomcat 9 with JDK 8 (Perfect for apps built with Java 8 and 'javax' packages)
-FROM tomcat:9.0-jre8
+FROM docker.io/library/tomcat:9.0-jre8
 
 # Copy our custom war file into Tomcat's webapps folder and rename it to ROOT.war
 COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
