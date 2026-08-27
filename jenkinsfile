@@ -30,6 +30,29 @@ stage ('Build custom Tomcat image'){
         sh 'podman build -t chatterbox-app:latest .'
     }
 }
+stage('Deploy to Podman Pod') {
+    steps {
+        script {
+            sh 'podman rm -f chatterbox-container chatterbox-mysql || true'
+            sh 'podman pod rm -f chatterbox-pod || true'
+
+            sh 'podman pod create --name chatterbox-pod -p 8080:8080 -p 3306:3306'
+
+            sh '''
+                podman run -d --pod chatterbox-pod --name chatterbox-mysql \
+                -e MYSQL_ROOT_PASSWORD=mysql \
+                -e MYSQL_DATABASE=chatterbox_db \
+                docker.io/library/mysql:latest
+            '''
+
+            sh '''
+                podman run -d --pod chatterbox-pod --name chatterbox-container \
+                localhost/chatterbox-app:latest
+            '''
+            sh 'podman ps -a'
+        }
+    }
+}
    
 }
 }
