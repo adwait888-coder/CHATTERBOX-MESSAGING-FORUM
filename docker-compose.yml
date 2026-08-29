@@ -18,6 +18,8 @@ services:
       - "8080:8080"
     depends_on:
       - chatterbox-mysql
+    extra_hosts:
+      - "localhost:chatterbox-mysql"
     networks:
       - chatterbox-net
     restart: always
