@@ -19,7 +19,7 @@ services:
     depends_on:
       - chatterbox-mysql
     extra_hosts:
-      - "localhost:chatterbox-mysql"
+      - "localhost:127.0.0.1"
     networks:
       - chatterbox-net
     restart: always
