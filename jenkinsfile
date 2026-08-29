@@ -34,5 +34,19 @@ pipeline {
                 }
             }
         }
+         stage('Wait and Import Database') {
+    steps {
+        sh '''
+            echo "Waiting for MySQL to boot up..."
+            sleep 50
+
+            echo "Importing chatterbox_db.sql into MySQL..."
+            docker exec -i chatterbox-mysql mysql -h 127.0.0.1 -u root -p'mysql' chatterbox_db < target/ChatterBox/chatterbox_db.sql
+
+            echo "Database imported successfully!"
+        '''
+    }
+}
+
     }
 }
