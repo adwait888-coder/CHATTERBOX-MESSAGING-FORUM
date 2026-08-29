@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  chatterbox-mysql:
+    image: docker.io/library/mysql:latest
+    container_name: chatterbox-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: chatterbox_db
+    networks:
+      - chatterbox-net
+    restart: always
+
+  chatterbox-app:
+    build: .
+    container_name: chatterbox-container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - chatterbox-mysql
+    networks:
+      - chatterbox-net
+    restart: always
+
+networks:
+  chatterbox-net:
+    driver: bridge
