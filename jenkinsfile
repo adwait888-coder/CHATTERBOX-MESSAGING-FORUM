@@ -2,57 +2,37 @@ pipeline {
     agent any
     stages {
         stage('Checkout'){
-        steps{
-            git url: 'https://github.com/adwait888-coder/CHATTERBOX-MESSAGING-FORUM', branch: 'main'
+            steps{
+                git url: 'https://github.com/adwait888-coder/CHATTERBOX-MESSAGING-FORUM', branch: 'main'
+            }
+        }
+        stage('Build with Maven'){
+            steps{
+                sh '''
+                    mkdir -p target/classes
+                    chmod -R 777 target || true
+
+                    docker run --rm \
+                    -v ${WORKSPACE}:/app \
+                    -w /app \
+                    registry.access.redhat.com/ubi8/openjdk-8 \
+                    mvn package
+                '''
+            }
+        }
+        stage('Deploy with Docker Compose') {
+            steps {
+                script {
+                   
+                    sh 'docker compose down || true'
+
+                    
+                    sh 'docker compose up -d --build'
+
+                    
+                    sh 'docker ps -a'
+                }
+            }
         }
     }
-    stage('Build'){
-        steps{
-            sh 'ls -la'
-        }
-    }
-   stage('Compile with Podman') {
-    steps {
-        sh '''
-            mkdir -p target/classes
-            chmod -R 777 target || true
-
-            podman run --rm \
-            -v /var/lib/jenkins/workspace/CHATTERBOX-MESSAGING-FORUM:/app:z \
-            -w /app \
-            registry.access.redhat.com/ubi8/openjdk-8 \
-            mvn package
-        '''
-    }
-}
-stage ('Build custom Tomcat image'){
-    steps{
-        sh 'podman build -t chatterbox-app:latest .'
-    }
-}
-stage('Deploy to Podman Pod') {
-    steps {
-        script {
-            sh 'podman rm -f chatterbox-container chatterbox-mysql || true'
-            sh 'podman pod rm -f chatterbox-pod || true'
-
-            sh 'podman pod create --name chatterbox-pod -p 8080:8080 -p 3306:3306'
-
-            sh '''
-                podman run -d --pod chatterbox-pod --name chatterbox-mysql \
-                -e MYSQL_ROOT_PASSWORD=mysql \
-                -e MYSQL_DATABASE=chatterbox_db \
-                docker.io/library/mysql:latest
-            '''
-
-            sh '''
-                podman run -d --pod chatterbox-pod --name chatterbox-container \
-                localhost/chatterbox-app:latest
-            '''
-            sh 'podman ps -a'
-        }
-    }
-}
-   
-}
 }
