@@ -20,7 +20,7 @@ public class ControlPanel extends HttpServlet {
         try {
             
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chatterbox_db", "root", "mysql");
+            Connection con = DriverManager.getConnection("jdbc:mysql://chatterbox-mysql:3306/chatterbox_db", "root", "mysql");
             Statement stmt = con.createStatement();
 
             // २. [F1] TOGGLE BOT (MySQL Event on/off)

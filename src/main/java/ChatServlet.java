@@ -35,7 +35,7 @@ public class ChatServlet extends HttpServlet {
             public void run() {
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chatterbox_db", "root", "mysql");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://chatterbox-mysql:3306/chatterbox_db", "root", "mysql");
                     
                     PreparedStatement ps = con.prepareStatement("INSERT INTO messages(sender, msg) VALUES(?, ?)");
                     ps.setString(1, finalSender); 

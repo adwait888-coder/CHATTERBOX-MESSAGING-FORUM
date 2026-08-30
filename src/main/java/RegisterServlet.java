@@ -18,7 +18,7 @@ public class RegisterServlet extends HttpServlet {
         try {
             // Database connection
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/chatterbox_db", "root", "mysql");
+            Connection con = DriverManager.getConnection("jdbc:mysql://chatterbox-mysql:3306/chatterbox_db", "root", "mysql");
             
             // Query prepare karne
             PreparedStatement ps = con.prepareStatement("INSERT INTO users(fullname, username, email, password) VALUES(?,?,?,?)");

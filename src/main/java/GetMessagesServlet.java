@@ -27,7 +27,7 @@ public class GetMessagesServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             // 3. CONNECTION URL (chatterbox_db ani utf8mb4 support sathi)
-            String url = "jdbc:mysql://localhost:3306/chatterbox_db?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_general_ci";
+            String url = "jdbc:mysql://chatterbox-mysql:3306/chatterbox_db?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_general_ci";
             con = DriverManager.getConnection(url, "root", "mysql");
             
             stmt = con.createStatement();
