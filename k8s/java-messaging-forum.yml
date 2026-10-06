@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatterbox-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chatterbox-app
+  template:
+    metadata:
+      labels:
+        app: chatterbox-app
+    spec:
+      containers:
+      - name: chatterbox-app
+        image: ghcr.io/adwait888-coder/chatterbox:v1
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatterbox-app
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30080
+  selector:
+    app: chatterbox-app
