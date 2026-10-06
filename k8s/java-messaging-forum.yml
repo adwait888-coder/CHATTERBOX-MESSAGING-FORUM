@@ -12,6 +12,8 @@ spec:
       labels:
         app: chatterbox-app
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
       - name: chatterbox-app
         image: ghcr.io/adwait888-coder/chatterbox
