@@ -16,7 +16,7 @@ spec:
         - name: ghcr-secret
       containers:
       - name: chatterbox-app
-        image: ghcr.io/adwait888-coder/chatterbox
+        image: ghcr.io/adwait888-coder/chatterbox:v1
         ports:
         - containerPort: 8080
 ---
