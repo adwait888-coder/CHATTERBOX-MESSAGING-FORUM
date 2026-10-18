@@ -7,13 +7,18 @@ import javax.servlet.http.*;
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
 
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Form madhun data ghene
         String fullname = request.getParameter("fullname");
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+
+        // Validation: password madhe kamit kami 4 character pahijet
+        if (password == null || password.length() < 4) {
+            response.getWriter().println("Error: Please enter at least 4 alphanumeric characters.");
+            return;
+        }
 
         try {
             // Database connection
