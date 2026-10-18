@@ -17,6 +17,7 @@ spec:
       containers:
       - name: chatterbox-app
         image: ghcr.io/adwait888-coder/chatterbox:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
 ---
